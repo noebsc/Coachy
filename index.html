@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coachy - Ton Coach Musculation Personnel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Écran de chargement -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loader"></div>
+        <p>Chargement de ton programme...</p>
+    </div>
+
+    <!-- Page de connexion -->
+    <div id="auth-page" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h1 class="auth-title">💪 Coachy</h1>
+                <p class="auth-subtitle">Ton coach musculation personnel</p>
+                
+                <div id="login-form" class="auth-form">
+                    <h2>Connexion</h2>
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="Mot de passe" required>
+                    <button id="login-btn" class="btn btn-primary">Se connecter</button>
+                    <p class="auth-switch">Pas encore de compte ? <a href="#" id="show-register">S'inscrire</a></p>
+                </div>
+
+                <div id="register-form" class="auth-form" style="display: none;">
+                    <h2>Inscription</h2>
+                    <input type="text" id="register-name" placeholder="Prénom" required>
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="Mot de passe (min 6 caractères)" required>
+                    <input type="password" id="register-confirm" placeholder="Confirmer le mot de passe" required>
+                    <button id="register-btn" class="btn btn-primary">Créer mon compte</button>
+                    <p class="auth-switch">Déjà inscrit ? <a href="#" id="show-login">Se connecter</a></p>
+                </div>
+
+                <div id="auth-error" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application principale -->
+    <div id="main-app" class="main-app" style="display: none;">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <span class="brand-icon">💪</span>
+                    <span class="brand-name">Coachy</span>
+                </div>
+                <div class="nav-menu">
+                    <button class="nav-item active" data-page="dashboard">
+                        <span class="nav-icon">🏠</span>
+                        <span class="nav-text">Dashboard</span>
+                    </button>
+                    <button class="nav-item" data-page="programme">
+                        <span class="nav-icon">📅</span>
+                        <span class="nav-text">Programme</span>
+                    </button>
+                    <button class="nav-item" data-page="historique">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Progrès</span>
+                    </button>
+                    <button class="nav-item" data-page="guides">
+                        <span class="nav-icon">📚</span>
+                        <span class="nav-text">Guides</span>
+                    </button>
+                    <button class="nav-item" data-page="profil">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profil</span>
+                    </button>
+                </div>
+                <button id="logout-btn" class="btn-logout">
+                    <span>Déconnexion</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Contenu principal -->
+        <main class="main-content">
+            <!-- Dashboard -->
+            <section id="dashboard" class="page-section active">
+                <div class="dashboard-header">
+                    <h1 class="welcome-title">Salut <span id="user-name">Champion</span> ! 🔥</h1>
+                    <p class="welcome-subtitle">Prêt à sculpter ton summer body ?</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value" id="streak-count">0</div>
+                        <div class="stat-label">Jours de suite</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💪</div>
+                        <div class="stat-value" id="workout-count">0</div>
+                        <div class="stat-label">Séances complétées</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value" id="level">Débutant</div>
+                        <div class="stat-label">Niveau actuel</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-value" id="badges-count">0</div>
+                        <div class="stat-label">Badges obtenus</div>
+                    </div>
+                </div>
+
+                <!-- Séance du jour -->
+                <div class="today-workout">
+                    <h2 class="section-title">🎯 Séance du jour</h2>
+                    <div id="today-workout-content" class="workout-container">
+                        <!-- Contenu dynamique -->
+                    </div>
+                </div>
+
+                <!-- Motivation du jour -->
+                <div class="motivation-card">
+                    <h3>💭 Motivation du jour</h3>
+                    <p id="daily-motivation" class="motivation-quote"></p>
+                </div>
+
+                <!-- Badges récents -->
+                <div class="badges-section">
+                    <h2 class="section-title">🏆 Tes badges</h2>
+                    <div id="badges-container" class="badges-grid">
+                        <!-- Badges dynamiques -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Programme complet -->
+            <section id="programme" class="page-section">
+                <div class="programme-header">
+                    <h1>📅 Ton programme évolutif</h1>
+                    <p>Programme sur mesure pour ton transformation</p>
+                </div>
+
+                <div class="phase-selector">
+                    <button class="phase-btn active" data-phase="1">Phase 1 - Fondations</button>
+                    <button class="phase-btn" data-phase="2">Phase 2 - Développement</button>
+                    <button class="phase-btn" data-phase="3">Phase 3 - Intensification</button>
+                </div>
+
+                <div id="programme-calendar" class="programme-calendar">
+                    <!-- Calendrier dynamique -->
+                </div>
+
+                <div id="programme-details" class="programme-details">
+                    <!-- Détails du programme -->
+                </div>
+            </section>
+
+            <!-- Historique et Progrès -->
+            <section id="historique" class="page-section">
+                <div class="historique-header">
+                    <h1>📊 Tes progrès</h1>
+                    <p>Suis ton évolution semaine après semaine</p>
+                </div>
+
+                <div class="progress-charts">
+                    <div class="chart-card">
+                        <h3>Séances par semaine</h3>
+                        <canvas id="workout-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Évolution des performances</h3>
+                        <canvas id="performance-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="history-timeline">
+                    <h2>📅 Historique des séances</h2>
+                    <div id="history-list" class="history-list">
+                        <!-- Historique dynamique -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Guides et tutoriels -->
+            <section id="guides" class="page-section">
+                <div class="guides-header">
+                    <h1>📚 Guides complets</h1>
+                    <p>Tout ce qu'il faut savoir pour progresser</p>
+                </div>
+
+                <div class="guides-tabs">
+                    <button class="guide-tab active" data-guide="exercices">Exercices</button>
+                    <button class="guide-tab" data-guide="nutrition">Nutrition</button>
+                    <button class="guide-tab" data-guide="recuperation">Récupération</button>
+                    <button class="guide-tab" data-guide="anatomie">Anatomie</button>
+                </div>
+
+                <div id="guides-content" class="guides-content">
+                    <!-- Contenu des guides dynamique -->
+                </div>
+            </section>
+
+            <!-- Profil et paramètres -->
+            <section id="profil" class="page-section">
+                <div class="profil-header">
+                    <h1>👤 Mon profil</h1>
+                    <p>Personnalise ton expérience</p>
+                </div>
+
+                <div class="profil-card">
+                    <h2>Informations personnelles</h2>
+                    <div class="profil-info">
+                        <div class="info-row">
+                            <label>Prénom :</label>
+                            <input type="text" id="profil-name" placeholder="Ton prénom">
+                        </div>
+                        <div class="info-row">
+                            <label>Âge :</label>
+                            <input type="number" id="profil-age" placeholder="17" value="17">
+                        </div>
+                        <div class="info-row">
+                            <label>Taille (cm) :</label>
+                            <input type="number" id="profil-height" placeholder="180" value="180">
+                        </div>
+                        <div class="info-row">
+                            <label>Poids (kg) :</label>
+                            <input type="number" id="profil-weight" placeholder="63" value="63">
+                        </div>
+                        <div class="info-row">
+                            <label>Objectif :</label>
+                            <select id="profil-goal">
+                                <option value="masse">Prise de masse</option>
+                                <option value="force">Gain de force</option>
+                                <option value="endurance">Endurance musculaire</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="save-profil" class="btn btn-primary">Sauvegarder</button>
+                </div>
+
+                <div class="preferences-card">
+                    <h2>Préférences d'exercices</h2>
+                    <div id="exercise-preferences" class="exercise-preferences">
+                        <!-- Préférences dynamiques -->
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h2>Paramètres</h2>
+                    <div class="settings-options">
+                        <div class="setting-row">
+                            <label>
+                                <input type="checkbox" id="notifications-enabled">
+                                <span>Notifications motivantes</span>
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <label>
+                                <input type="checkbox" id="sound-enabled" checked>
+                                <span>Sons et effets</span>
+                            </label>
+                        </div>
+                        <div class="setting-row">
+                            <label>
+                                <input type="checkbox" id="dark-mode">
+                                <span>Mode sombre</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Timer flottant -->
+        <div id="floating-timer" class="floating-timer hidden">
+            <div class="timer-display">
+                <span id="timer-minutes">00</span>:<span id="timer-seconds">00</span>
+            </div>
+            <div class="timer-controls">
+                <button id="timer-play" class="timer-btn">▶</button>
+                <button id="timer-pause" class="timer-btn">⏸</button>
+                <button id="timer-reset" class="timer-btn">↺</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour les exercices -->
+    <div id="exercise-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 id="modal-exercise-name"></h2>
+            <div id="modal-exercise-content">
+                <!-- Contenu dynamique de l'exercice -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+            setPersistence,
+            browserLocalPersistence
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { 
+            getFirestore,
+            doc,
+            setDoc,
+            getDoc,
+            updateDoc,
+            collection,
+            query,
+            where,
+            orderBy,
+            limit,
+            getDocs,
+            addDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA_nmHUbCS2EgvrxpCrQfoiMTnSZQTzVDI",
+            authDomain: "coachy-ac635.firebaseapp.com",
+            projectId: "coachy-ac635",
+            storageBucket: "coachy-ac635.firebasestorage.app",
+            messagingSenderId: "129338009104",
+            appId: "1:129338009104:web:3d90c5d237a7c0cce98c95",
+            measurementId: "G-V0P7R08Q9F"
+        };
+
+        // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Rendre les fonctions globales
+        window.firebase = {
+            auth,
+            db,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut,
+            setPersistence,
+            browserLocalPersistence,
+            doc,
+            setDoc,
+            getDoc,
+            updateDoc,
+            collection,
+            query,
+            where,
+            orderBy,
+            limit,
+            getDocs,
+            addDoc,
+            serverTimestamp
+        };
+
+        // Configurer la persistance de session
+        setPersistence(auth, browserLocalPersistence);
+    </script>
+
+    <!-- Scripts modulaires -->
+    <script src="js/workouts.js"></script>
+    <script src="js/gamification.js"></script>
+    <script src="js/timer.js"></script>
+    <script src="js/auth.js" type="module"></script>
+    <script src="js/data.js" type="module"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js" type="module"></script>
+</body>
+</html>
